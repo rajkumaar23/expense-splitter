@@ -60,7 +60,6 @@
          (define input (read-line))
          (set! expenses (append expenses (list (list u_id e_id amount))))
          (unless (regexp-match #px"yes" input)
-           (printf "Thanks for using... \n")
            (break))
          )
   expenses
@@ -70,8 +69,18 @@
   (for ([i (length expenses)])
    (set! sum (+ sum (caddr (list-ref expenses i))))
     )
-  sum
+  (display "Total amount of expenses is Rs.")
+  (display sum)
+  (define no-of-users 0)
+  (for ([value (in-hash-values users)])
+    (set! no-of-users (+ no-of-users 1))
   )
+  (define per-head (/ sum no-of-users))
+  (newline)
+  (display "Expense per head is Rs.")
+  (display per-head)
+  sum
+ )
   
 (define (main)
   (display (read_users))
@@ -80,7 +89,6 @@
   (newline)
   (display(read_expenses))
   (newline)
-  (display "Total amount of expenses is Rs.")
-  (display(calc_expenses))
+  (calc_expenses)
   (clear_data)
   )
