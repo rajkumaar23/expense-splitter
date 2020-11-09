@@ -2,6 +2,7 @@
 (require dyoo-while-loop)
 (define users (make-hash))
 (define events (make-hash))
+(define user_expenses (make-hash))
 (define expenses '())
 
  
@@ -10,6 +11,7 @@
   (set! expenses '())
   (hash-clear! users)
   (hash-clear! events)
+  (hash-clear! user_expenses)
   )
 
  
@@ -79,8 +81,30 @@
   (newline)
   (display "Expense per head is Rs.")
   (display per-head)
+  (for ([n no-of-users])
+    (define ind_sum 0)
+    (for ([i (length expenses)])
+      (cond
+        [
+         (equal? n (car (list-ref expenses i)))
+         (set! ind_sum (+ ind_sum (caddr (list-ref expenses i))))
+         ]))
+    (hash-set! user_expenses n (- per-head ind_sum)))
+  (newline)
+  (display user_expenses)
   sum
  )
+(define (display_expenses)
+  (define no-of-users 0)
+  (for ([value (in-hash-values user_expenses)])
+    (set! no-of-users (+ no-of-users 1))
+  )
+  (for ([i no-of-users])
+    (display (hash-ref users i))
+    (display (hash-ref user_expenses i))
+    (newline)
+  )
+  )
   
 (define (main)
   (display (read_users))
@@ -90,5 +114,8 @@
   (display(read_expenses))
   (newline)
   (calc_expenses)
+  (newline)
+  (display_expenses)
+  (newline)
   (clear_data)
   )
